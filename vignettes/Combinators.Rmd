@@ -47,7 +47,7 @@ pDog("dog")$result
 
 The `pRegex` function generates a primitive parser that accepts a
 grammar defined by a regular expression.  The matched string and any
-captured groups from hte regular expression are returned as the value
+captured groups from the regular expression are returned as the value
 of the parse
 ```{r}
 pLabel <- pRegex("Label","label (\\d+)")
@@ -118,7 +118,7 @@ p
 
 The ``formatAST` generic is used to create a string representation of
 the AST and is used to implement the print methods for the AST.  The
-printed represtentation of the AST can be simplified by writing
+printed representation of the AST can be simplified by writing
 specific methods for the result classes
 ```{r}
 formatAST.Integer <- function(x,indent,...)
