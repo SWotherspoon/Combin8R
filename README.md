@@ -1,4 +1,6 @@
 # Parser Combinators for R
+[![Travis-CI Build Status](https://travis-ci.org/SWotherspoon/Combin8R.svg?branch=master)](https://travis-ci.org/SWotherspoon/Combin8R)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/SWotherspoon/Combin8R?branch=master&svg=true)](https://ci.appveyor.com/project/SWotherspoon/Combin8R)
 
 A parser combinator package to assist the construction of recursive
 descent parsers. A parser is a function that accepts a string as

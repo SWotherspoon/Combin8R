@@ -4,10 +4,10 @@
 \alias{pSeq}
 \title{"Seq" Parser Combinator}
 \usage{
-pSeq(cls, ...)
+pSeq(tag, ...)
 }
 \arguments{
-\item{cls}{a class name or a function of a single argument that
+\item{tag}{a class name or a function of a single argument that
 constructs an object representing the result of the parse.}
 
 \item{...}{A sequence of parsers to matched in sequence.}
@@ -20,7 +20,7 @@ Create a parser that succeeds on input accepted by a sequence of
 simpler parsers applied in succession.
 }
 \details{
-The \code{cls} argument should either be a string naming the class
+The \code{tag} argument should either be a string naming the class
 of the result, or a function that constructs a object representing
 the result of the parse given the list of results of the
 constituent parsers.

@@ -4,10 +4,10 @@
 \alias{pRegex}
 \title{Create a Primitive Parser from a Regex}
 \usage{
-pRegex(cls, regex)
+pRegex(tag, regex)
 }
 \arguments{
-\item{cls}{a class name or a function of a single argument that
+\item{tag}{a class name or a function of a single argument that
 constructs an object representing the result of the parse.}
 
 \item{regex}{A regular expression that defines the text to be parsed.}
@@ -25,17 +25,9 @@ regular expression.
 The regex defining a match will usually begin with the "^"
 beginning of string anchor.
 
-The \code{cls} argument should either be a string naming the class
+The \code{tag} argument should either be a string naming the class
 of the result, or a function that constructs a object representing
 the result of the parse, given the first row of the character
 matrix returned by \code{stri_match_first_regex}.
-
-A parser is a function that accepts a string as input and returns
-\code{NULL} on failure or a list with elements
-\tabular{ll}{
-\code{input} \tab the unconsumed input \cr
-\code{result} \tab an object representing the result of the parse \cr
-}
-if the input satisfies the parser.
 }
 

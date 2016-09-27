@@ -4,10 +4,10 @@
 \alias{pMany}
 \title{"Many" Parser Combinator}
 \usage{
-pMany(cls, p)
+pMany(tag, p)
 }
 \arguments{
-\item{cls}{a class name or a function of a single argument that
+\item{tag}{a class name or a function of a single argument that
 constructs an object representing the result of the parse.}
 
 \item{p}{A parser to match zero or more times.}
@@ -20,7 +20,7 @@ Create a parser that succeeds on input for which a simpler parser
 succeeds zero or more times in succession.
 }
 \details{
-The \code{cls} argument should either be a string naming the class
+The \code{tag} argument should either be a string naming the class
 of the result, or a function that constructs a object representing
 the result of the parse given the list of results of the
 constituent parser.

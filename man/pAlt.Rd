@@ -4,10 +4,10 @@
 \alias{pAlt}
 \title{"Alt" Parser Combinator}
 \usage{
-pAlt(cls, ...)
+pAlt(tag, ...)
 }
 \arguments{
-\item{cls}{a class name or a function of a single argument that
+\item{tag}{a class name or a function of a single argument that
 constructs an object representing the result of the parse.}
 
 \item{...}{Alternative simpler parsers.}
@@ -20,7 +20,7 @@ Creates a parser that accepts input that is accepted by any one of
 a number of simpler parsers.
 }
 \details{
-The \code{cls} argument should either be a string naming the class
+The \code{tag} argument should either be a string naming the class
 of the result, or a function that constructs a object representing
 the result of the parse given the result of the first alternative
 parser satisfied by the input.

@@ -20,3 +20,6 @@ ByteCompile: yes
 License: Mozilla Public License 2.0
 LazyData: TRUE
 RoxygenNote: 5.0.1
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr

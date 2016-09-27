@@ -1,0 +1,267 @@
+---
+title: "Parser Combinators"
+author: "S Wotherspoon"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Parsers
+
+A parser is a function that accepts a string as input and returns
+`NULL` on failure or a list with elements
+
+* `input` the unconsumed input, and
+* `result` an object representing the result of the parse
+
+if the string satisfies the grammar recognized by the parser.
+
+A parser combinator is a higher order function that combines one or
+more simpler parsers to create a parser that recognizes a more complex
+grammar.
+
+## Primitive Parsers
+
+The `pLiteral` function generates a primitive parser that recognizes a
+literal string.
+```{r}
+library(Combin8R)
+pDog <- pLiteral("Tag","dog")
+pDog("monkey")
+pDog("dog")
+```
+The matched literal is returned as the value of the parse, as an S3
+object with a class defined by the `tag` argument and inheriting from
+`pLiteral`,
+```{r}
+unclass(pDog("dog")$result)
+```
+and print methods are defined for the major classes to simplify the
+display of the result
+```{r}
+pDog("dog")$result
+```
+
+The `pRegex` function generates a primitive parser that accepts a
+grammar defined by a regular expression.  The matched string and any
+captured groups from hte regular expression are returned as the value
+of the parse
+```{r}
+pLabel <- pRegex("Label","label (\\d+)")
+pLabel("label 7")
+```
+
+The `tag` argument can be a function that is used to construct the
+object representing the value of the parse
+```{r}
+pLabel <- pRegex(function(value) structure(list(value=as.numeric(value[[2]])),class=c("Label","pRegex")),
+                 "label (\\d+)")
+pLabel("label 7")
+```
+
+## Combinators
+
+There are four main combinators
+
+* `pAlt` creates a parser that accepts input accepted by any one of a
+  number of simpler parsers
+
+* `pSeq` creates a parser that accepts input accepted by a number of
+  simpler parsers applied in sequence
+
+* `pMany` creates a parser that accepts input for which a simpler
+  parser succeeds zero or more times in succession
+
+* `pSome` creates a parser that accepts input for which a simpler
+  parser succeeds one or more times in succession
+
+
+
+# Simple Logo
+
+Consider the subset of the Logo language consisting of the constructs
+repeat, forward, left and right, so that a possible program is given
+by
+```{r}
+program <- "repeat 10 [right 36 repeat 5 [forward 54 right 72]]"
+```
+
+## Simple Parser
+
+We can write a parser for the Logo subset as follows
+```{r}
+pInteger <- pRegex("Integer","\\d+")
+pSpaces <- pRegex("Spaces","\\s*")
+pSpaces1 <- pRegex("Spaces1","\\s+")
+pCommands <-
+  pSome("Commands",
+    pSeq("CommandWhite",
+      pAlt("Command",
+        pSeq("forwardCmd",pLiteral("forward"),pSpaces1,pInteger),
+        pSeq("rightCmd",pLiteral("right"),pSpaces1,pInteger),
+        pSeq("leftCmd",pLiteral("left"),pSpaces1,pInteger),
+        pSeq("repeatCmd",pLiteral("repeat"),pSpaces1,pInteger,pSpaces1,pBlock)
+      ),
+      pSpaces))
+pBlock <- pSeq("Block",pLiteral("["),pSpaces,pCommands,pLiteral("]"))
+```
+
+This parses the program text and produces an abstract syntax tree (AST)
+```{r}
+p <- pCommands(program)
+p
+```
+
+
+The ``formatAST` generic is used to create a string representation of
+the AST and is used to implement the print methods for the AST.  The
+printed represtentation of the AST can be simplified by writing
+specific methods for the result classes
+```{r}
+formatAST.Integer <- function(x,indent,...)
+  as.character(x$value)
+formatAST.forwardCmd <- function(x,indent,...)
+  paste("forward",formatAST(x$value[[3]]))
+formatAST.rightCmd <- function(x,indent,...)
+  paste("right",formatAST(x$value[[3]]))
+formatAST.leftCmd <- function(x,indent,...)
+  paste("left",formatAST(x$value[[3]]))
+formatAST.repeatCmd <- function(x,indent,...)
+  paste("repeat",formatAST(x$value[[3]]),formatAST(x$value[[5]]))
+formatAST.Command <- function(x,indent,...)
+  formatAST(x$value)
+formatAST.CommandWhite <- function(x,indent,...)
+  formatAST(x$value[[1]])
+formatAST.Commands <- function(x,indent,...)
+  paste(sapply(x$value,formatAST),collapse=" ")
+formatAST.Block <- function(x,indent,...)
+  paste("[",formatAST(x$value[[3]]),"]",sep="")
+```
+
+The AST resulting from the parse does not change, only its printed
+representation
+```{r}
+p
+```
+
+
+## Simplified AST
+
+The AST constructed by the simple parser is more complicated than
+strictly necessary because it contains nodes for purely syntactic
+elements of the language such as whitespace.  These elements can be
+removed if we construct the AST ourselves
+```{r}
+mkprm <- function(value) structure(list(value[[1]]$value,value[[3]]),class="prm")
+mkrpt <- function(value) structure(list(value[[3]],value[[5]]),class="rpt")
+mkblk <- function(value) structure(value[[3]],class="blk")
+pInteger <- pRegex(as.numeric,"\\d+")
+pSpaces <- pRegex("Spaces","\\s*")
+pSpaces1 <- pRegex("Spaces1","\\s+")
+pCommands <-
+  pSome(function(value) value,
+        pSeq(function(value) value[[1]],
+             pAlt(function(value) value,
+                  pSeq(mkprm,pLiteral("forward"),pSpaces1,pInteger),
+                  pSeq(mkprm,pLiteral("right"),pSpaces1,pInteger),
+                  pSeq(mkprm,pLiteral("left"),pSpaces1,pInteger),
+                  pSeq(mkrpt,pLiteral("repeat"),pSpaces1,pInteger,pSpaces1,pBlock)
+             ),
+             pSpaces))
+pBlock <- pSeq(mkblk,pLiteral("["),pSpaces,pCommands,pLiteral("]"))
+```
+
+The AST now takes the form
+```{r}
+p <- pCommands(program)
+p
+```
+
+As before, the print representation can be simplified by by defining
+appropriate methods for `formatAST`
+```{r}
+formatAST.prm <- function(x,indent,...)
+  paste(x[[1]],x[[2]],collapse=" ")
+print.prm <- function(x,indent=0,...)
+  cat(formatAST(x,indent))
+formatAST.rpt <- function(x,indent,...)
+  paste("repeat",x[[1]],formatAST(x[[2]]),collapse=" ")
+print.rpt <- function(x,indent=0,...)
+  cat(formatAST(x,indent))
+formatAST.blk <- function(x,indent,...)
+  paste("[",paste(sapply(x,formatAST),collapse=" "),"]",sep="")
+print.blk <- function(x,indent=0,...)
+  cat(formatAST(x,indent))
+```
+so now
+```{r}
+p
+```
+
+
+## Compiler
+
+Alternately, a compiler for the Logo subset can be written by
+translating Logo constructs directly to R expressions
+```{r}
+mkiter <- local({n <- 0
+  function() {
+    n <<- n+1
+    as.name(paste("k",n,sep=""))
+  }})
+cmpfwd <- function(value)
+  substitute({
+      x0 <- x1
+      x1 <- r*c(cos(theta),sin(theta))
+      segments(x0[1],x0[2],x1[1],x1[2])
+    },list(r=value[[3]]))
+cmprgt <- function(value)
+  substitute(theta <- theta + pi/180*a,list(a=value[[3]]))
+cmplft <- function(value)
+  substitute(theta <- theta - pi/180*a,list(a=value[[3]]))
+cmprpt <- function(value)
+  substitute(for(k in 1:n) b,
+    list(k=mkiter(),n=value[[3]],b=value[[5]]))
+cmpblk <- function(value)
+  if(length(value)>1) as.call(c(as.name("{"),value[[3]])) else value
+pInteger <- pRegex(as.numeric,"\\d+")
+pSpaces <- pRegex("Spaces","\\s*")
+pSpaces1 <- pRegex("Spaces1","\\s+")
+pCommands <-
+  pSome(function(value) value,
+        pSeq(function(value) value[[1]],
+             pAlt(function(value) value,
+                  pSeq(cmpfwd,pLiteral("forward"),pSpaces1,pInteger),
+                  pSeq(cmprgt,pLiteral("right"),pSpaces1,pInteger),
+                  pSeq(cmplft,pLiteral("left"),pSpaces1,pInteger),
+                  pSeq(cmprpt,pLiteral("repeat"),pSpaces1,pInteger,pSpaces1,pBlock)
+             ),
+             pSpaces))
+pBlock <- pSeq(cmpblk,pLiteral("["),pSpaces,pCommands,pLiteral("]"))
+pLogo <- function(input,xlim=c(-100,100),ylim=c(-100,100)) {
+  p <- pCommands(input)
+  if(!is.null(p)) {
+    body <- as.call(c(as.name("{"),
+                      quote(plot.new()),
+                      substitute(plot.window(xlim,ylim)),
+                      quote(x1 <- c(0,0)),
+                      quote(theta <- 0),
+                      p$result))
+    list(input=p$input,
+         result=substitute(local(body),list(body=body)))
+    }
+}
+```
+
+The result of the parser is now R code
+```{r}
+p <- pLogo(program)
+p
+```
+and evaluating this code executes the Logo program
+```{r}
+eval(p$result)
+```
