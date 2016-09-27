@@ -215,7 +215,7 @@ mkiter <- local({n <- 0
 cmpfwd <- function(value)
   substitute({
       x0 <- x1
-      x1 <- r*c(cos(theta),sin(theta))
+      x1 <- x1+r*c(cos(theta),sin(theta))
       segments(x0[1],x0[2],x1[1],x1[2])
     },list(r=value[[3]]))
 cmprgt <- function(value)
