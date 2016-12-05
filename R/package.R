@@ -9,6 +9,6 @@
 #'
 #' @name Combin8R-package
 #' @docType package
-#' @author Simon Wotherspoon, Micheal Sumner
+#' @author Simon Wotherspoon, Michael Sumner
 NULL
 

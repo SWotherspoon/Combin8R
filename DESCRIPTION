@@ -4,7 +4,7 @@ Title: Parser Combinators for R
 Version: 0.1.0
 Authors@R: as.person(c(
     "Simon Wotherspoon <Simon.Wotherspoon@utas.edu.au> [aut, cre]",
-    "Micheal Sumner <Micheal.Sumner@aad.gov.au> [aut]"))
+    "Michael Sumner <Michael.Sumner@aad.gov.au> [aut]"))
 Description: A parser combinator package to assist the construction of
     recursive descent parsers. A parser is a function that accepts a
     string as input, and upon success returns a list containing any
