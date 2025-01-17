@@ -2,24 +2,24 @@ Package: Combin8R
 Type: Package
 Title: Parser Combinators for R
 Version: 0.1.0
-Authors@R: as.person(c(
-    "Simon Wotherspoon <Simon.Wotherspoon@utas.edu.au> [aut, cre]",
-    "Michael Sumner <Michael.Sumner@aad.gov.au> [aut]"))
+Authors@R: c(person("Simon", "Wotherspoon", , "Simon.Wotherspoon@aad.gov.au", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-6947-4445")),
+             person("Michael", "Sumner", email = "mdsumner@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0002-2471-7511")))
 Description: A parser combinator package to assist the construction of
     recursive descent parsers. A parser is a function that accepts a
     string as input, and upon success returns a list containing any
     unconsumed input and the result of the parse.  A parser combinator
-    is a higher order function that combines one or more simple parses
+    is a higher order function that combines one or more simple parsers
     to form a more complex parser.
-Depends:
-    R(>= 3.3.0)
 Imports:
     stringi
-NeedsCompilation: no
-ByteCompile: yes
-License: Mozilla Public License 2.0
-LazyData: TRUE
-RoxygenNote: 5.0.1
-Suggests: knitr,
+Suggests: 
+    knitr,
     rmarkdown
+NeedsCompilation: no
+License: Mozilla Public License 2.0
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
+Encoding: UTF-8
+URL: https://github.com/SWotherspoon/Combin8R
+BugReports: https://github.com/SWotherspoon/Combin8R/issues

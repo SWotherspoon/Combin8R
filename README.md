@@ -1,6 +1,8 @@
 # Parser Combinators for R
-[![Travis-CI Build Status](https://travis-ci.org/SWotherspoon/Combin8R.svg?branch=master)](https://travis-ci.org/SWotherspoon/Combin8R)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/SWotherspoon/Combin8R?branch=master&svg=true)](https://ci.appveyor.com/project/SWotherspoon/Combin8R)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/SWotherspoon/Combin8R/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/SWotherspoon/Combin8R/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 
 A parser combinator package to assist the construction of recursive
 descent parsers. A parser is a function that accepts a string as
@@ -14,16 +16,8 @@ complex parser.
 The package is easily installed from GitHub, using the devtools package.
 
 ```R
-devtools::install_github("SWotherspoon/Combin8R")
+# install.packages("remotes")
+remotes::install_github("SWotherspoon/Combin8R")
 ```
 
-If you don't have `devtools` installed already, install it first.
-
-```R
-install.packages("devtools")
-```
-
-Combin8R otherwise does not need devtools for normal use.
-
-
-
+The vignette provides a simple example to get you started.

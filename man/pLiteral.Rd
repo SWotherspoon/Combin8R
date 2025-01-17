@@ -26,4 +26,3 @@ The \code{tag} argument should either be a string naming the class
 of the result, or a function that constructs a object representing
 the result of the parse, given the matched literal string.
 }
-

@@ -17,4 +17,3 @@ A string representation of the abstract syntax tree
 \description{
 Format an abstract syntax tree as a string
 }
-

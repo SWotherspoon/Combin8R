@@ -30,4 +30,3 @@ of the result, or a function that constructs a object representing
 the result of the parse, given the first row of the character
 matrix returned by \code{stri_match_first_regex}.
 }
-

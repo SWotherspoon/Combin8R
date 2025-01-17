@@ -25,4 +25,3 @@ of the result, or a function that constructs a object representing
 the result of the parse given the list of results of the
 constituent parsers.
 }
-
