@@ -13,7 +13,8 @@ complex parser.
 
 ## Installing
 
-The package is easily installed from GitHub, using the devtools package.
+The current version of Combin8R can be installed from GitHub using the 
+remotes package. 
 
 ```R
 # install.packages("remotes")

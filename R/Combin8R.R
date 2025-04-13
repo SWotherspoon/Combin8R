@@ -21,7 +21,7 @@ formatAST.default <- function(x,indent=0) {
 ##' This function creates a parser that accepts input that matches a
 ##' given string.
 ##'
-##' The \code{tag} argument should either be a string naming the class
+##' The `tag` argument should either be a string naming the class
 ##' of the result, or a function that constructs a object representing
 ##' the result of the parse, given the matched literal string.
 ##'
@@ -61,7 +61,7 @@ print.pLiteral <- function(x,indent=0,...)
 ##' The regex defining a match will usually begin with the "^"
 ##' beginning of string anchor.
 ##'
-##' The \code{tag} argument should either be a string naming the class
+##' The `tag` argument should either be a string naming the class
 ##' of the result, or a function that constructs a object representing
 ##' the result of the parse, given the first row of the character
 ##' matrix returned by \code{stri_match_first_regex}.
@@ -101,7 +101,7 @@ print.pRegex <- function(x,indent=0,...)
 ##' Creates a parser that accepts input that is accepted by any one of
 ##' a number of simpler parsers.
 ##'
-##' The \code{tag} argument should either be a string naming the class
+##' The `tag` argument should either be a string naming the class
 ##' of the result, or a function that constructs a object representing
 ##' the result of the parse given the result of the first alternative
 ##' parser satisfied by the input.
@@ -142,7 +142,7 @@ print.pAlt <- function(x,indent=0,...)
 ##' Create a parser that succeeds on input accepted by a sequence of
 ##' simpler parsers applied in succession.
 ##'
-##' The \code{tag} argument should either be a string naming the class
+##' The `tag` argument should either be a string naming the class
 ##' of the result, or a function that constructs a object representing
 ##' the result of the parse given the list of results of the
 ##' constituent parsers.
@@ -186,7 +186,7 @@ print.pSeq <- function(x,indent=0,...)
 ##' Create a parser that succeeds on input for which a simpler parser
 ##' succeeds zero or more times in succession.
 ##'
-##' The \code{tag} argument should either be a string naming the class
+##' The `tag` argument should either be a string naming the class
 ##' of the result, or a function that constructs a object representing
 ##' the result of the parse given the list of results of the
 ##' constituent parser.
@@ -232,7 +232,7 @@ print.pMany <- function(x,indent=0,...)
 ##' Create a parser that succeeds on input for which a simpler parser
 ##' succeeds one or more times in succession.
 ##'
-##' The \code{tag} argument should either be a string naming the class
+##' The `tag` argument should either be a string naming the class
 ##' of the result, or a function that constructs a object representing
 ##' the result of the parse given the list of results of the
 ##' constituent parser.
