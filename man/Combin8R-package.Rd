@@ -21,6 +21,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Simon Wotherspoon \email{Simon.Wotherspoon@aad.gov.au} (\href{https://orcid.org/0000-0002-6947-4445}{ORCID})
   \item Michael Sumner \email{mdsumner@gmail.com} (\href{https://orcid.org/0000-0002-2471-7511}{ORCID})
 }
 

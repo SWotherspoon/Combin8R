@@ -15,7 +15,6 @@ complex parser.
 
 The current version of Combin8R can be installed from GitHub using the 
 remotes package. 
-
 ```R
 # install.packages("remotes")
 remotes::install_github("SWotherspoon/Combin8R")
